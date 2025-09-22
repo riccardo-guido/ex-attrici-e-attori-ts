@@ -69,11 +69,29 @@ async function getActress(id: number): Promise<Actress | null> {
   }
 }
 
-// Esempio di utilizzo
 getActress(1).then((actress) => {
   if (actress) {
     console.log("Actress found:", actress);
   } else {
     console.log("Actress not found or invalid data.");
   }
+});
+
+async function getAllActresses(): Promise<Actress[]> {
+  try {
+    const response = await fetch(`http://localhost:3333/actresses`);
+    if (!response.ok) return [];
+
+    const data = await response.json();
+    if (!Array.isArray(data)) return [];
+
+    return data.filter(isActress);
+  } catch {
+    return [];
+  }
+}
+
+getAllActresses().then((actresses) => {
+  console.log(`Found ${actresses.length} actresses.`);
+  actresses.forEach((actress) => console.log(actress.name));
 });
