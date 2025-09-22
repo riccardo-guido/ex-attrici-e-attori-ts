@@ -95,3 +95,18 @@ getAllActresses().then((actresses) => {
   console.log(`Found ${actresses.length} actresses.`);
   actresses.forEach((actress) => console.log(actress.name));
 });
+
+async function getActresses(ids: number[]): Promise<(Actress | null)[]> {
+  const promises = ids.map((id) => getActress(id));
+  return Promise.all(promises);
+}
+
+getActresses([1, 2, 3, 4]).then((results) => {
+  results.forEach((result, index) => {
+    if (result) {
+      console.log(`Actress with ID ${index + 1}:`, result.name);
+    } else {
+      console.log(`Actress with ID ${index + 1} not found.`);
+    }
+  });
+});
